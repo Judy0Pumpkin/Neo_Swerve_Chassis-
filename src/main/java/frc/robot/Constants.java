@@ -26,10 +26,10 @@ public final class Constants {
         public static final int kRightRearThrottleID = 7;
 
         // Rotor encoder IDs
-        public static final int kLeftFrontCANCoderID = 1;
-        public static final int kRightFrontCANCoderID = 2;
-        public static final int kLeftRearCANCoderID = 3;
-        public static final int kRightRearCANCoderID = 4;
+        public static final int kLeftFrontCANCoderID = 9;
+        public static final int kRightFrontCANCoderID = 10;
+        public static final int kLeftRearCANCoderID = 11;
+        public static final int kRightRearCANCoderID = 12;
 
         // Rotor encoder & motor inversion
         public static final boolean kRotorEncoderDirection = false;
@@ -48,10 +48,10 @@ public final class Constants {
         // Swerve kinematics (order: left front, right front, left rear, right rear)
         // Swerve kinematics（順序：左前，右前，左後，右後）
         public static final SwerveDriveKinematics kSwerveKinematics = new SwerveDriveKinematics(
-            new Translation2d(0.0, 0.0), 
-            new Translation2d(0.0, 0.0), 
-            new Translation2d(0.0, 0.0),
-            new Translation2d(0.0, 0.0)
+            new Translation2d(0.3, 0.3), 
+            new Translation2d(0.3, -0.3), 
+            new Translation2d(-0.3, 0.3),
+            new Translation2d(-0.3, -0.3)
         );
 
         // Rotor PID constants
@@ -66,13 +66,13 @@ public final class Constants {
 
         // Wheel diameter
         // 輪徑
-        public static final double kWheelDiameterMeters = 0.0; // wheel diameter
+        public static final double kWheelDiameterMeters = 0.6; // wheel diameter
         
         // Throttle gear ratio
         // (number of turns it takes the motor to rotate the rotor one revolution)
         // Throttle 齒輪比率
         // （馬達轉動輪子一圈所需的圈數）
-        public static final double kThrottleGearRatio = 0.0; 
+        public static final double kThrottleGearRatio = 1.0; 
 
         // Throttle velocity conversion constant
         // Throttle 速度轉換 Constant
