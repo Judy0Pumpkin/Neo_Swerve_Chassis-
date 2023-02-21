@@ -47,36 +47,43 @@ public class RobotContainer {
 
     // Extract trajectory from PathPlanner
     // 從 PathPlanner 獲取 trajectory
-    /*private PathPlannerTrajectory mTrajectory = PathPlanner.loadPath(
-        "New Path", 
-        SwerveConstants.kMaxVelocityMetersPerSecond, 
-        SwerveConstants.kMaxAccelerationMetersPerSecond
-    );
+
+
+    // private PathPlannerTrajectory mTrajectory = PathPlanner.loadPath(
+    //     "New Path", 
+    //     SwerveConstants.kMaxVelocityMetersPerSecond, 
+    //     SwerveConstants.kMaxAccelerationMetersPerSecond
+    // );
 
     public RobotContainer() {
         // Configure the button bindings
         configureButtonBindings();
 
         mSwerve.setDefaultCommand(mManualDriveCommand);
+
+
+
+
+        
     }
 
     private void configureButtonBindings() {}
 
-    public Command getAutonomousCommand() {
-        // Generate path following command from desired path
-        PPSwerveControllerCommand command = new PPSwerveControllerCommand(
-            mTrajectory, 
-            mSwerve::getPose, 
-            SwerveConstants.kSwerveKinematics, 
-            mXController, 
-            mYController, 
-            mThetaController, 
-            mSwerve::setModuleStates, 
-            mSwerve
-        );
+    // public Command getAutonomousCommand() {
+    //     // Generate path following command from desired path
+    //     PPSwerveControllerCommand command = new PPSwerveControllerCommand(
+    //         mTrajectory, 
+    //         mSwerve::getPose, 
+    //         SwerveConstants.kSwerveKinematics, 
+    //         mXController, 
+    //         mYController, 
+    //         mThetaController, 
+    //         mSwerve::setModuleStates, 
+    //         mSwerve
+    //     );
 
-        // `andThen...` is used to stop the robot after the path is finished
-        // `andThen...` 用於在路徑完成後停止機器人
-        return command.andThen(() -> mSwerve.drive(0, 0, 0, false));
-    }*/
+    //     // `andThen...` is used to stop the robot after the path is finished
+    //     // `andThen...` 用於在路徑完成後停止機器人
+    //     return command.andThen(() -> mSwerve.drive(0, 0, 0, false));
+    // }
 }

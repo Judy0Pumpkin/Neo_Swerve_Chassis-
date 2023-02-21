@@ -14,29 +14,36 @@ public final class Constants {
     public static final class SwerveConstants {
 
         // Rotor IDs
-        public static final int kLeftFrontRotorID = 2;
+        public static final int kLeftFrontRotorID = 1;
         public static final int kRightFrontRotorID = 4;
-        public static final int kLeftRearRotorID = 6;
-        public static final int kRightRearRotorID = 8;
+        public static final int kLeftRearRotorID = 8;
+        public static final int kRightRearRotorID = 6;
 
         // Throttle IDs
-        public static final int kLeftFrontThrottleID = 1;
+        public static final int kLeftFrontThrottleID = 2;
         public static final int kRightFrontThrottleID = 3;
-        public static final int kLeftRearThrottleID = 5;
-        public static final int kRightRearThrottleID = 7;
+        public static final int kLeftRearThrottleID = 7;
+        public static final int kRightRearThrottleID = 5;
 
         // Rotor encoder IDs
         public static final int kLeftFrontCANCoderID = 9;
-        public static final int kRightFrontCANCoderID = 10;
-        public static final int kLeftRearCANCoderID = 11;
-        public static final int kRightRearCANCoderID = 12;
+        public static final int kRightFrontCANCoderID = 11;
+        public static final int kLeftRearCANCoderID = 12;
+        public static final int kRightRearCANCoderID = 10;
 
         // Rotor encoder & motor inversion
         public static final boolean kRotorEncoderDirection = false;
-        public static final boolean kRotorMotorInversion = false;
+        // drive encoder
+        public static final boolean kFrontLeftDriveEncoderReversed = true;
+        public static final boolean kRearLeftDriveEncoderReversed = false;
+        public static final boolean kFrontRightDriveEncoderReversed = true;
+        public static final boolean kRearRightDriveEncoderReversed = false;
+
+
+        public static final boolean kRotorMotorInversion = true;
 
         // IMU ID
-        public static final int kImuID = 1;
+        public static final int kImuID = 0;
 
         // Rotor encoder offsets
         // Rotor encoder 偏移量
@@ -55,24 +62,25 @@ public final class Constants {
         );
 
         // Rotor PID constants
-        public static final double kRotor_kP = 0.0;
+       // public static final double kRotor_kF = 0.1;
+        public static final double kRotor_kP = 0.00025;  // <--------------------------
         public static final double kRotor_kI = 0.0;
         public static final double kRotor_kD = 0.0;
 
         // Velocity & acceleration of swerve
         // Swerve 最大速度 / 加速度
-        public static final double kMaxVelocityMetersPerSecond = 3.0;
-        public static final double kMaxAccelerationMetersPerSecond = 3.0;
+        public static final double kMaxVelocityMetersPerSecond = 13.0;
+        public static final double kMaxAccelerationMetersPerSecond = 13.0;
 
         // Wheel diameter
         // 輪徑
-        public static final double kWheelDiameterMeters = 0.6; // wheel diameter
+        public static final double kWheelDiameterMeters = 0.1; // wheel diameter <---------------------------------------
         
         // Throttle gear ratio
         // (number of turns it takes the motor to rotate the rotor one revolution)
         // Throttle 齒輪比率
         // （馬達轉動輪子一圈所需的圈數）
-        public static final double kThrottleGearRatio = 1.0; 
+        public static final double kThrottleGearRatio = 150/7; // <-----------------------------------------------
 
         // Throttle velocity conversion constant
         // Throttle 速度轉換 Constant
@@ -95,9 +103,10 @@ public final class Constants {
         public static final double kPathingTheta_kP = 0.1;
         public static final double kPathingTheta_kI = 0.0;
         public static final double kPathingTheta_kD = 0.0;
+        public static double kLkFrontLeftDriveEncoderReversed;
     }
     // Voltage compensation
-    public static final double kVoltageCompensation = 12.0;
+    public static final double kVoltageCompensation = 9.0;
     
     // Controller port
     public static final int kControllerPort = 0;

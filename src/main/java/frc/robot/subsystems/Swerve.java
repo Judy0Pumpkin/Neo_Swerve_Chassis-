@@ -10,6 +10,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveConstants;
 
@@ -17,37 +18,43 @@ public class Swerve extends SubsystemBase {
     // Initialize IMU
     // 初始化 IMU
     private final WPI_Pigeon2 mImu = new WPI_Pigeon2(SwerveConstants.kImuID);
-
+    public Runnable drive;
    // private SwerveDriveOdometry mOdometry;
-
+  
 
     private  SwerveModule mLeftFrontModule = new SwerveModule(
             SwerveConstants.kLeftFrontThrottleID, 
             SwerveConstants.kLeftFrontRotorID, 
             SwerveConstants.kLeftFrontCANCoderID, 
-            SwerveConstants.kLeftFrontRotorOffset
+            SwerveConstants.kLeftFrontRotorOffset,
+            false, true
         );
 
         private  SwerveModule mRightFrontModule = new SwerveModule(
             SwerveConstants.kRightFrontThrottleID, 
             SwerveConstants.kRightFrontRotorID, 
             SwerveConstants.kRightFrontCANCoderID, 
-            SwerveConstants.kRightFrontRotorOffset
+            SwerveConstants.kRightFrontRotorOffset,
+            false, false
         );
 
         private  SwerveModule mLeftRearModule = new SwerveModule(
             SwerveConstants.kLeftRearThrottleID, 
             SwerveConstants.kLeftRearRotorID, 
             SwerveConstants.kLeftRearCANCoderID, 
-            SwerveConstants.kLeftRearRotorOffset
+            SwerveConstants.kLeftRearRotorOffset,
+            false, false
         );
 
         private  SwerveModule mRightRearModule = new SwerveModule(
             SwerveConstants.kRightRearThrottleID, 
             SwerveConstants.kRightRearRotorID, 
             SwerveConstants.kRightRearCANCoderID, 
-            SwerveConstants.kRightRearRotorOffset
+            SwerveConstants.kRightRearRotorOffset,
+            true, false
         );
+        //public  SwerveDriveOdometry mOdometry= new SwerveDriveOdometry(SwerveConstants.kSwerveKinematics, mImu.getRotation2d());
+    
         private SwerveDriveOdometry mOdometry = new SwerveDriveOdometry(
             SwerveConstants.kSwerveKinematics,  mImu.getRotation2d(),
             new SwerveModulePosition[] {
@@ -55,7 +62,7 @@ public class Swerve extends SubsystemBase {
                 mRightFrontModule.getPosition(),
                 mLeftRearModule.getPosition(),
                 mRightRearModule.getPosition()
-            }, new Pose2d(5.0, 13.5, new Rotation2d()));
+            });
 
 
         // Instantiate odometry - used for tracking position
@@ -81,7 +88,7 @@ public class Swerve extends SubsystemBase {
         // Instantiate swerve modules - each、// r、//epresenting unique module on the robot
         // 實例化（instantiate）swerve module - 個代表機器上四個其一
 
-       
+      
 
 
          
@@ -93,13 +100,27 @@ public class Swerve extends SubsystemBase {
         mOdometry.update(
             mImu.getRotation2d(), 
             new SwerveModulePosition[] {
-                mRightFrontModule.getPosition(),//<-
+                
                 mLeftFrontModule.getPosition(),
-               
+                mRightFrontModule.getPosition(),//<-
                 mLeftRearModule.getPosition(),
                 mRightRearModule.getPosition()
             }
         );
+
+        SmartDashboard.putNumber("mLeftFrontModule",  mLeftFrontModule.getDriveEncoderPosition());
+        SmartDashboard.putNumber("mRightFrontModule",  mRightFrontModule.getDriveEncoderPosition());
+        SmartDashboard.putNumber("mLeftRearModule",  mLeftRearModule.getDriveEncoderPosition());
+        SmartDashboard.putNumber("mRightRearModule",  mRightRearModule.getDriveEncoderPosition());
+
+        SmartDashboard.putNumber("AmLeftFrontModule",  mLeftFrontModule.getTurningEncoderAngle());
+        SmartDashboard.putNumber("AmRightFrontModule",  mRightFrontModule.getTurningEncoderAngle());
+        SmartDashboard.putNumber("AmLeftRearModule",  mLeftRearModule.getTurningEncoderAngle());
+        SmartDashboard.putNumber("AmRightRearModule",  mRightRearModule.getTurningEncoderAngle());
+
+
+
+
     }
 
 
@@ -179,7 +200,18 @@ public class Swerve extends SubsystemBase {
      * @param pose robot pose
      */
     public void setPose(Pose2d pose) {
-      //mOdometry.resetPosition(pose, mImu.getRotation2d());
-     // mOdometry.resetPosition(mImu.getRotation2d(),mImu.pose , pose);
-    }
+        mOdometry.resetPosition(
+            mImu.getRotation2d(),
+            new SwerveModulePosition[] {
+                mLeftFrontModule.getPosition(),
+                mRightFrontModule.getPosition(),
+                mLeftRearModule.getPosition(),
+                mRightRearModule.getPosition()
+            },
+            pose);
+      }
+
+
+
+    
 }

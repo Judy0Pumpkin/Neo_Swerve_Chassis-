@@ -3,8 +3,10 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -27,7 +29,9 @@ public class SwerveModule {
     private WPI_CANCoder mRotorEncoder;
 
     // 初始化 rotor PID controller
+   // private PIDController mRotorPID;
     private PIDController mRotorPID;
+
 
     /**
      * 構建新的 SwerveModule
@@ -37,7 +41,7 @@ public class SwerveModule {
      * @param rotorEncoderID CAN ID of rotor encoder
      * @param rotorOffsetAngleDeg rotor encoder 偏移量
      */
-    public SwerveModule(int throttleID, int rotorID, int rotorEncoderID, double rotorOffsetAngleDeg)
+    public SwerveModule(int throttleID, int rotorID, int rotorEncoderID, double rotorOffsetAngleDeg, boolean kRotorEncoderDirection, boolean kThrottleReversed)
     {
         // 實例化 throttle 馬達 & encoder
         mThrottle = new CANSparkMax(throttleID, MotorType.kBrushless);
@@ -54,33 +58,47 @@ public class SwerveModule {
         mRotor.restoreFactoryDefaults();
         mRotorEncoder.configFactoryDefault();
 
+        mThrottle.setInverted(kThrottleReversed);
+
         // 根據之前的常數配置 rotor 馬達
         mRotor.setInverted(SwerveConstants.kRotorMotorInversion);
         mRotor.enableVoltageCompensation(Constants.kVoltageCompensation);
-        mRotor.setIdleMode(IdleMode.kBrake);
+        mRotor.setIdleMode(IdleMode.kCoast);
 
         // 根據之前的常數配置轉向 rotor encoder
         mRotorEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
         mRotorEncoder.configMagnetOffset(rotorOffsetAngleDeg);
-        mRotorEncoder.configSensorDirection(SwerveConstants.kRotorEncoderDirection);
+        mRotorEncoder.configSensorDirection(kRotorEncoderDirection);
         mRotorEncoder.configSensorInitializationStrategy(
-            SensorInitializationStrategy.BootToAbsolutePosition
-        );
+             SensorInitializationStrategy.BootToAbsolutePosition
+         );
+
+        
 
         // 根據之前的常數配置 rotor 馬達的PID控制器
+        // mRotorPID = mRotor.getPIDController();
+        // mRotorPID.setFF(SwerveConstants.kRotor_kF, 0);
+        // mRotorPID.setP(SwerveConstants.kRotor_kP, 0);
+        // mRotorPID.setI(SwerveConstants.kRotor_kI, 0);
+        // mRotorPID.setD(SwerveConstants.kRotor_kD, 0);
+
         mRotorPID = new PIDController(
             
             SwerveConstants.kRotor_kP,
             SwerveConstants.kRotor_kI,
             SwerveConstants.kRotor_kD
         );
-
+        mRotorPID.setTolerance(45/ 4096.0 * 360.0);
+      
         // ContinuousInput 認為 min 和 max 是同一點並且自動計算到設定點的最短路線
-        mRotorPID.enableContinuousInput(-180, 180);
+         mRotorPID.enableContinuousInput(-180, 180);
+         
+      
+       
 
         // 根據之前的常數配置 throttle 馬達
         mThrottle.enableVoltageCompensation(Constants.kVoltageCompensation);
-        mThrottle.setIdleMode(IdleMode.kBrake);
+        mThrottle.setIdleMode(IdleMode.kCoast);
 
         // 給與 throttle encoder 轉換係數以便它以米每秒而不是 RPM 為單位讀取速度
         mThrottleEncoder.setVelocityConversionFactor(
@@ -99,6 +117,12 @@ public class SwerveModule {
             Rotation2d.fromDegrees(mRotorEncoder.getAbsolutePosition())
         );
     }
+
+    public void initialPoosture(){
+       
+
+    }
+
 
     /**
      * Set module state
