@@ -88,7 +88,7 @@ public class SwerveModule {
             SwerveConstants.kRotor_kI,
             SwerveConstants.kRotor_kD
         );
-        mRotorPID.setTolerance(45/ 4096.0 * 360.0);
+        mRotorPID.setTolerance(10/360*4096); // 10 deg tolerence
       
         // ContinuousInput 認為 min 和 max 是同一點並且自動計算到設定點的最短路線
          mRotorPID.enableContinuousInput(-180, 180);
