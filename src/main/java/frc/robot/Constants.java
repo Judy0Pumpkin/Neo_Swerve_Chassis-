@@ -47,10 +47,10 @@ public final class Constants {
 
         // Rotor encoder offsets
         // Rotor encoder 偏移量
-        public static final double kLeftFrontRotorOffset = 0.0;
-        public static final double kRightFrontRotorOffset = 0.0;
-        public static final double kLeftRearRotorOffset = 0.0;
-        public static final double kRightRearRotorOffset = 0.0;
+        public static final double kLeftFrontRotorOffset =-137.988;
+        public static final double kRightFrontRotorOffset =162.773-71.613+180;
+        public static final double kLeftRearRotorOffset = 112.764;
+        public static final double kRightRearRotorOffset = 112.5 ;
 
         // Swerve kinematics (order: left front, right front, left rear, right rear)
         // Swerve kinematics（順序：左前，右前，左後，右後）
@@ -63,7 +63,7 @@ public final class Constants {
 
         // Rotor PID constants
        // public static final double kRotor_kF = 0.1;
-        public static final double kRotor_kP = 0.00025;  // <--------------------------
+        public static final double kRotor_kP = 0.01;  // <--------------------------
         public static final double kRotor_kI = 0.0;
         public static final double kRotor_kD = 0.0;
 

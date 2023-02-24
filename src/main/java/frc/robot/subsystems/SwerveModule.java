@@ -24,6 +24,7 @@ public class SwerveModule {
 
     // 初始化 throttle encoder
     private RelativeEncoder mThrottleEncoder;
+    private RelativeEncoder mRotorAnotherEncoder;
 
     // 初始化 rotor encoder
     private WPI_CANCoder mRotorEncoder;
@@ -41,14 +42,17 @@ public class SwerveModule {
      * @param rotorEncoderID CAN ID of rotor encoder
      * @param rotorOffsetAngleDeg rotor encoder 偏移量
      */
-    public SwerveModule(int throttleID, int rotorID, int rotorEncoderID, double rotorOffsetAngleDeg, boolean kRotorEncoderDirection, boolean kThrottleReversed)
+    public SwerveModule(int throttleID, int rotorID, int rotorEncoderID, double rotorOffsetAngleDeg, boolean kRotorEncoderDirection, boolean kThrottleReversed, boolean mThrottleEncoderInverse,boolean kRotorMotorInversion)
     {
         // 實例化 throttle 馬達 & encoder
         mThrottle = new CANSparkMax(throttleID, MotorType.kBrushless);
         mThrottleEncoder = mThrottle.getEncoder();
 
+        
+
         // 實例化 rotor 馬達
         mRotor = new CANSparkMax(rotorID, MotorType.kBrushless);
+        mRotorAnotherEncoder = mRotor.getEncoder();
 
         // 實例化 rotor absolute encoder
         mRotorEncoder = new WPI_CANCoder(rotorEncoderID);
@@ -59,18 +63,25 @@ public class SwerveModule {
         mRotorEncoder.configFactoryDefault();
 
         mThrottle.setInverted(kThrottleReversed);
-
+        
+        //mThrottleEncoder.setInverted(mThrottleEncoderInverse);
         // 根據之前的常數配置 rotor 馬達
         mRotor.setInverted(SwerveConstants.kRotorMotorInversion);
         mRotor.enableVoltageCompensation(Constants.kVoltageCompensation);
-        mRotor.setIdleMode(IdleMode.kCoast);
+        mRotor.setIdleMode(IdleMode.kBrake);
+
+       // mRotor.setInverted(kRotorMotorInversion);
+        
 
         // 根據之前的常數配置轉向 rotor encoder
         mRotorEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
         mRotorEncoder.configMagnetOffset(rotorOffsetAngleDeg);
         mRotorEncoder.configSensorDirection(kRotorEncoderDirection);
+
+        
+
         mRotorEncoder.configSensorInitializationStrategy(
-             SensorInitializationStrategy.BootToAbsolutePosition
+             SensorInitializationStrategy.BootToZero
          );
 
         
@@ -88,7 +99,7 @@ public class SwerveModule {
             SwerveConstants.kRotor_kI,
             SwerveConstants.kRotor_kD
         );
-        mRotorPID.setTolerance(10/360*4096); // 10 deg tolerence
+        // mRotorPID.setTolerance(5); // 10 deg tolerence
       
         // ContinuousInput 認為 min 和 max 是同一點並且自動計算到設定點的最短路線
          mRotorPID.enableContinuousInput(-180, 180);
@@ -148,7 +159,7 @@ public class SwerveModule {
         // Set the distance (in this case, angle) in radians per pulse for the turning encoder.
         // This is the the angle through an entire rotation (2 * pi) divided by the
         // encoder resolution.
-        return mRotorEncoder.getPosition() / 4096.0 * 360.0;
+        return mRotorEncoder.getAbsolutePosition() ;// 4096.0 * 360.0;
       }
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(getDriveEncoderPosition(), Rotation2d.fromDegrees(getTurningEncoderAngle()));

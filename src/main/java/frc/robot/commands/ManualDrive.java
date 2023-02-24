@@ -21,6 +21,6 @@ public class ManualDrive extends CommandBase {
     public void execute() {
         // Drives with XSpeed, YSpeed, zSpeed
         // True/false for field-oriented driving
-        mSwerve.drive(mController.getLeftY(), mController.getLeftX(), mController.getRightX(), false);
+        mSwerve.drive(mController.getLeftY()*0.2, mController.getLeftX()*0.2, mController.getRightX()*0.4, true);
     }
 }

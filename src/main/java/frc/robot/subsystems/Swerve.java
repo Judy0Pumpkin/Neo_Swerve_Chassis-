@@ -27,7 +27,7 @@ public class Swerve extends SubsystemBase {
             SwerveConstants.kLeftFrontRotorID, 
             SwerveConstants.kLeftFrontCANCoderID, 
             SwerveConstants.kLeftFrontRotorOffset,
-            false, true
+            false, true, false,false
         );
 
         private  SwerveModule mRightFrontModule = new SwerveModule(
@@ -35,7 +35,7 @@ public class Swerve extends SubsystemBase {
             SwerveConstants.kRightFrontRotorID, 
             SwerveConstants.kRightFrontCANCoderID, 
             SwerveConstants.kRightFrontRotorOffset,
-            false, false
+            false, true, false,true
         );
 
         private  SwerveModule mLeftRearModule = new SwerveModule(
@@ -43,7 +43,7 @@ public class Swerve extends SubsystemBase {
             SwerveConstants.kLeftRearRotorID, 
             SwerveConstants.kLeftRearCANCoderID, 
             SwerveConstants.kLeftRearRotorOffset,
-            false, false
+            false, true, false, false
         );
 
         private  SwerveModule mRightRearModule = new SwerveModule(
@@ -51,7 +51,7 @@ public class Swerve extends SubsystemBase {
             SwerveConstants.kRightRearRotorID, 
             SwerveConstants.kRightRearCANCoderID, 
             SwerveConstants.kRightRearRotorOffset,
-            true, false
+            false, false, true,false
         );
         //public  SwerveDriveOdometry mOdometry= new SwerveDriveOdometry(SwerveConstants.kSwerveKinematics, mImu.getRotation2d());
     
